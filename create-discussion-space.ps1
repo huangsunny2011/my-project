@@ -2,14 +2,14 @@
 # 此腳本會為不同專案建立獨立的討論路徑和結構
 
 param(
-    [Parameter(Mandatory=$false)]
-    [string]$ProjectName = "",
-    
-    [Parameter(Mandatory=$false)]
-    [string]$ProjectPath = "",
-    
-    [Parameter(Mandatory=$false)]
-    [switch]$CreateGitHubDiscussions = $false
+  [Parameter(Mandatory = $false)]
+  [string]$ProjectName = "",
+
+  [Parameter(Mandatory = $false)]
+  [string]$ProjectPath = "",
+
+  [Parameter(Mandatory = $false)]
+  [switch]$CreateGitHubDiscussions = $false
 )
 
 Write-Host "==================================" -ForegroundColor Cyan
@@ -19,7 +19,7 @@ Write-Host ""
 
 # 如果沒有提供專案名稱，詢問用戶
 if ([string]::IsNullOrWhiteSpace($ProjectName)) {
-    $ProjectName = Read-Host "請輸入專案名稱（例如：user-auth-system）"
+  $ProjectName = Read-Host "請輸入專案名稱（例如：user-auth-system）"
 }
 
 # 清理專案名稱（移除特殊字符）
@@ -30,7 +30,7 @@ Write-Host "專案名稱: $CleanProjectName" -ForegroundColor Green
 
 # 如果沒有提供路徑，使用當前目錄
 if ([string]::IsNullOrWhiteSpace($ProjectPath)) {
-    $ProjectPath = Get-Location
+  $ProjectPath = Get-Location
 }
 
 # 建立討論空間目錄結構
@@ -42,33 +42,33 @@ Write-Host "建立討論空間目錄..." -ForegroundColor Yellow
 
 # 建立主討論目錄
 if (-not (Test-Path $DiscussionsRoot)) {
-    New-Item -ItemType Directory -Path $DiscussionsRoot | Out-Null
-    Write-Host "✓ 建立目錄: $DiscussionsRoot" -ForegroundColor Green
+  New-Item -ItemType Directory -Path $DiscussionsRoot | Out-Null
+  Write-Host "✓ 建立目錄: $DiscussionsRoot" -ForegroundColor Green
 }
 
 # 建立專案特定討論目錄
 if (-not (Test-Path $ProjectDiscussionPath)) {
-    New-Item -ItemType Directory -Path $ProjectDiscussionPath | Out-Null
-    Write-Host "✓ 建立目錄: $ProjectDiscussionPath" -ForegroundColor Green
+  New-Item -ItemType Directory -Path $ProjectDiscussionPath | Out-Null
+  Write-Host "✓ 建立目錄: $ProjectDiscussionPath" -ForegroundColor Green
 }
 
 # 建立討論分類目錄
 $Categories = @(
-    "general",          # 一般討論
-    "ideas",           # 想法和建議
-    "technical",       # 技術討論
-    "architecture",    # 架構設計
-    "troubleshooting", # 問題排查
-    "decisions",       # 決策記錄
-    "meetings"         # 會議記錄
+  "general",          # 一般討論
+  "ideas",           # 想法和建議
+  "technical",       # 技術討論
+  "architecture",    # 架構設計
+  "troubleshooting", # 問題排查
+  "decisions",       # 決策記錄
+  "meetings"         # 會議記錄
 )
 
 foreach ($category in $Categories) {
-    $categoryPath = Join-Path $ProjectDiscussionPath $category
-    if (-not (Test-Path $categoryPath)) {
-        New-Item -ItemType Directory -Path $categoryPath | Out-Null
-        Write-Host "✓ 建立分類: $category" -ForegroundColor Green
-    }
+  $categoryPath = Join-Path $ProjectDiscussionPath $category
+  if (-not (Test-Path $categoryPath)) {
+    New-Item -ItemType Directory -Path $categoryPath | Out-Null
+    Write-Host "✓ 建立分類: $category" -ForegroundColor Green
+  }
 }
 
 # 建立討論索引文件
@@ -153,7 +153,7 @@ Write-Host "✓ 建立索引文件: README.md" -ForegroundColor Green
 
 # 為每個分類建立 README
 $CategoryTemplates = @{
-    "general" = @"
+  "general"         = @"
 # 一般討論
 
 ## 📢 關於此分類
@@ -175,7 +175,7 @@ $CategoryTemplates = @{
 
 **分類管理員:** 全體成員
 "@
-    "ideas" = @"
+  "ideas"           = @"
 # 想法和建議
 
 ## 💡 關於此分類
@@ -207,7 +207,7 @@ $CategoryTemplates = @{
 
 **分類管理員:** 全體成員
 "@
-    "technical" = @"
+  "technical"       = @"
 # 技術討論
 
 ## 🔧 關於此分類
@@ -232,7 +232,7 @@ $CategoryTemplates = @{
 
 **分類管理員:** 技術負責人
 "@
-    "architecture" = @"
+  "architecture"    = @"
 # 架構設計
 
 ## 🏗️ 關於此分類
@@ -269,7 +269,7 @@ $CategoryTemplates = @{
 
 **分類管理員:** 架構師
 "@
-    "troubleshooting" = @"
+  "troubleshooting" = @"
 # 問題排查
 
 ## 🐛 關於此分類
@@ -301,7 +301,7 @@ Bug 調查、問題診斷、解決方案的討論。
 
 **分類管理員:** 全體成員
 "@
-    "decisions" = @"
+  "decisions"       = @"
 # 決策記錄
 
 ## 📋 關於此分類
@@ -342,7 +342,7 @@ Bug 調查、問題診斷、解決方案的討論。
 
 **分類管理員:** 團隊領導
 "@
-    "meetings" = @"
+  "meetings"        = @"
 # 會議記錄
 
 ## 🗓️ 關於此分類
@@ -392,11 +392,11 @@ Bug 調查、問題診斷、解決方案的討論。
 }
 
 foreach ($category in $Categories) {
-    $categoryReadmePath = Join-Path (Join-Path $ProjectDiscussionPath $category) "README.md"
-    if ($CategoryTemplates.ContainsKey($category)) {
-        $CategoryTemplates[$category] | Out-File -FilePath $categoryReadmePath -Encoding UTF8
-        Write-Host "✓ 建立分類說明: $category/README.md" -ForegroundColor Green
-    }
+  $categoryReadmePath = Join-Path (Join-Path $ProjectDiscussionPath $category) "README.md"
+  if ($CategoryTemplates.ContainsKey($category)) {
+    $CategoryTemplates[$category] | Out-File -FilePath $categoryReadmePath -Encoding UTF8
+    Write-Host "✓ 建立分類說明: $category/README.md" -ForegroundColor Green
+  }
 }
 
 # 建立新討論的輔助腳本
@@ -408,10 +408,10 @@ param(
     [Parameter(Mandatory=`$true)]
     [ValidateSet("general", "ideas", "technical", "architecture", "troubleshooting", "decisions", "meetings")]
     [string]`$Category,
-    
+
     [Parameter(Mandatory=`$true)]
     [string]`$Title,
-    
+
     [Parameter(Mandatory=`$false)]
     [string]`$Author = `$env:USERNAME
 )
@@ -477,7 +477,7 @@ Write-Host "  路徑: `$FilePath" -ForegroundColor Gray
 
 # 在 VSCode 中開啟討論文件
 if (Get-Command code -ErrorAction SilentlyContinue) {
-    code `$FilePath
+  code `$FilePath
 }
 "@
 
@@ -490,11 +490,11 @@ $SearchDiscussionScript = @"
 # 搜尋討論的輔助腳本
 
 param(
-    [Parameter(Mandatory=`$true)]
-    [string]`$Keyword,
-    
-    [Parameter(Mandatory=`$false)]
-    [string]`$Category = "*"
+  [Parameter(Mandatory = `$true)]
+  [string]`$Keyword,
+
+  [Parameter(Mandatory=`$false)]
+  [string]`$Category = "*"
 )
 
 Write-Host "搜尋關鍵字: `$Keyword" -ForegroundColor Yellow
@@ -505,17 +505,18 @@ Write-Host ""
 `$Results = Get-ChildItem -Path `$SearchPath -Include "*.md" -Recurse | Select-String -Pattern `$Keyword
 
 if (`$Results) {
-    Write-Host "找到 `$(`$Results.Count) 個結果:" -ForegroundColor Green
+  Write-Host "找到 `$(`$Results.Count) 個結果:" -ForegroundColor Green
+  Write-Host ""
+
+  `$Results | ForEach-Object {
+    Write-Host "📄 `$(`$_.Filename)" -ForegroundColor Cyan
+    Write-Host "   `$(`$_.Line.Trim())" -ForegroundColor Gray
+    Write-Host "   路徑: `$(`$_.Path)" -ForegroundColor DarkGray
     Write-Host ""
-    
-    `$Results | ForEach-Object {
-        Write-Host "📄 `$(`$_.Filename)" -ForegroundColor Cyan
-        Write-Host "   `$(`$_.Line.Trim())" -ForegroundColor Gray
-        Write-Host "   路徑: `$(`$_.Path)" -ForegroundColor DarkGray
-        Write-Host ""
-    }
-} else {
-    Write-Host "未找到相關討論" -ForegroundColor Red
+  }
+}
+else {
+  Write-Host "未找到相關討論" -ForegroundColor Red
 }
 "@
 
@@ -535,11 +536,11 @@ Write-Host ""
 `$Categories = @("general", "ideas", "technical", "architecture", "troubleshooting", "decisions", "meetings")
 
 foreach (`$cat in `$Categories) {
-    `$catPath = Join-Path `$PSScriptRoot `$cat
-    `$count = (Get-ChildItem -Path `$catPath -Filter "*.md" -Exclude "README.md" -ErrorAction SilentlyContinue).Count
-    
-    Write-Host "📂 `$cat" -ForegroundColor Yellow
-    Write-Host "   討論數: `$count" -ForegroundColor White
+  `$catPath = Join-Path `$PSScriptRoot `$cat
+  `$count = (Get-ChildItem -Path `$catPath -Filter "*.md" -Exclude "README.md" -ErrorAction SilentlyContinue).Count
+
+  Write-Host "📂 `$cat" -ForegroundColor Yellow
+  Write-Host "   討論數: `$count" -ForegroundColor White
 }
 
 Write-Host ""

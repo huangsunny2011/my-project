@@ -387,7 +387,7 @@ fetch('https://api.example.com/data', {
 初步調查發現可能的原因：
 
 1. **WebSocket 監聽器洩漏**
-   
+
    問題代碼：
    \```javascript
    // 每次連接都添加監聽器，但從未移除
@@ -399,7 +399,7 @@ fetch('https://api.example.com/data', {
    \```
 
 2. **定時器未清理**
-   
+
    \```javascript
    setInterval(() => {
      // 定時任務
@@ -412,11 +412,11 @@ fetch('https://api.example.com/data', {
 我檢查了程式碼，還發現：
 
 3. **大型物件被閉包引用**
-   
+
    \```javascript
    function sendNotification(userId, notification) {
      const largeUserData = await fetchUserData(userId); // 10KB
-     
+
      // 閉包持有 largeUserData
      setTimeout(() => {
        logger.log('Sent to:', largeUserData.email);
@@ -446,7 +446,7 @@ function handleConnection(ws) {
     ws.removeListener('close', closeHandler);
     handleClose(ws);
   };
-  
+
   ws.on('message', messageHandler);
   ws.on('close', closeHandler);
 }
@@ -479,7 +479,7 @@ process.on('SIGTERM', cleanup);
 function sendNotification(userId, notification) {
   const largeUserData = await fetchUserData(userId);
   const userEmail = largeUserData.email; // ✅ 只保留需要的
-  
+
   setTimeout(() => {
     logger.log('Sent to:', userEmail); // ✅ 不持有整個物件
   }, 60000);
@@ -728,7 +728,7 @@ Based on Copilot的建議，我們決定使用 RBAC 模式。
 
 - **時間:** 每天 09:30
 - **時長:** 15 分鐘
-- **格式:** 
+- **格式:**
   - 昨天完成了什麼
   - 今天計劃做什麼
   - 有什麼阻礙

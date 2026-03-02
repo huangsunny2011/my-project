@@ -214,65 +214,65 @@ AI 提示詞範例
 ```mermaid
 graph TB
     Start([開始])
-    
+
     subgraph Entry["入口文檔 🚪"]
         README[README.md<br/>總體概覽]
         Quick[AI_QUICK_START.md<br/>5分鐘演示]
         QS[QUICKSTART.md<br/>15分鐘設置]
     end
-    
+
     subgraph Setup["設置相關 🔧"]
         Fix[SETUP_FIX.md<br/>故障排除]
         Device[DEVICE_SETUP_GUIDE.md<br/>設備操作]
         Script1[setup.ps1<br/>自動設置]
     end
-    
+
     subgraph AI["AI 協作 🤖"]
         AIGuide[AI_AGENT_COLLABORATION_GUIDE.md<br/>AI 完整指南]
         Prompts[COPILOT_PROMPTS.md<br/>提示詞庫]
     end
-    
+
     subgraph Discussion["討論系統 💬"]
         DiscGuide[DISCUSSION_GUIDE.md<br/>使用指南]
         DiscRef[DISCUSSION_QUICK_REF.md<br/>快速參考]
         DiscEx[DISCUSSION_EXAMPLES.md<br/>範例集]
         Script2[create-discussion-space.ps1<br/>創建腳本]
     end
-    
+
     subgraph Workflow["工作流程 🔄"]
         WF[WORKFLOW.md<br/>協作流程]
         WFD[WORKFLOW_DIAGRAM.md<br/>流程圖]
     end
-    
+
     subgraph Project["專案規範 📋"]
         Arch[ARCHITECTURE.md<br/>架構設計]
         Contrib[CONTRIBUTING.md<br/>貢獻指南]
     end
-    
+
     Start --> README
     Start --> Quick
-    
+
     README --> QS
     Quick --> AIGuide
     QS --> Device
     QS --> Fix
     QS --> Script1
-    
+
     Device --> AIGuide
     Device --> WF
     Device --> WFD
-    
+
     AIGuide --> Prompts
     AIGuide --> DiscGuide
-    
+
     DiscGuide --> DiscRef
     DiscGuide --> DiscEx
     DiscGuide --> Script2
-    
+
     WF --> WFD
     WF --> Arch
     WF --> Contrib
-    
+
     style Quick fill:#ffeb3b
     style README fill:#4caf50
     style AIGuide fill:#2196f3

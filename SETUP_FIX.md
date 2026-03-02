@@ -150,7 +150,7 @@ Write-Host "New setup.ps1 created successfully!" -ForegroundColor Green
    # 設備 B
    git config --global user.name "Developer B"
    git config --global user.email "developer2@example.com"
-   
+
    # 設備 C
    git config --global user.name "Developer C"
    git config --global user.email "developer3@example.com"
@@ -225,7 +225,7 @@ A: 在 VSCode 中手動安裝：
    - 搜尋並安裝：GitHub Copilot, GitHub Copilot Chat, Live Share
 
 ### Q: 如何確認 Copilot 正常工作？
-A: 
+A:
    1. 打開任何 .js 或 .py 文件
    2. 開始輸入代碼，應該會看到灰色的建議
    3. 按 `Tab` 接受建議

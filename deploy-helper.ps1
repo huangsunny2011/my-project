@@ -40,13 +40,13 @@ $gitUserEmail = git config user.email
 if (-not $gitUserName -or -not $gitUserEmail) {
     Write-Host "! Git 用戶信息未設置" -ForegroundColor Red
     Write-Host ""
-    
+
     $userName = Read-Host "請輸入你的 Git 用戶名"
     $userEmail = Read-Host "請輸入你的 Git 郵箱"
-    
+
     git config user.name "$userName"
     git config user.email "$userEmail"
-    
+
     Write-Host "✓ Git 用戶信息已設置" -ForegroundColor Green
     Write-Host "  名稱: $userName" -ForegroundColor Gray
     Write-Host "  郵箱: $userEmail" -ForegroundColor Gray
@@ -72,9 +72,9 @@ if (-not $remotes) {
     Write-Host "  2. 使用 GitHub CLI 自動創建倉庫 (需要安裝 gh)" -ForegroundColor Gray
     Write-Host "  3. 稍後手動設置" -ForegroundColor Gray
     Write-Host ""
-    
+
     $choice = Read-Host "請選擇 (1/2/3)"
-    
+
     switch ($choice) {
         "1" {
             Write-Host ""
@@ -82,7 +82,7 @@ if (-not $remotes) {
             Write-Host "  HTTPS: https://github.com/username/repo.git" -ForegroundColor Gray
             Write-Host "  SSH:   git@github.com:username/repo.git" -ForegroundColor Gray
             Write-Host ""
-            
+
             $repoUrl = Read-Host "請輸入倉庫 URL"
             git remote add origin $repoUrl
             Write-Host "✓ 遠程倉庫已添加" -ForegroundColor Green
@@ -91,13 +91,13 @@ if (-not $remotes) {
             Write-Host ""
             $repoName = Read-Host "請輸入倉庫名稱 (例如: multi-device-ai-collab)"
             $repoType = Read-Host "倉庫類型: 公開(public) 或 私有(private)? (輸入 public 或 private)"
-            
+
             if ($repoType -eq "public") {
                 gh repo create $repoName --public --source=. --remote=origin
             } else {
                 gh repo create $repoName --private --source=. --remote=origin
             }
-            
+
             if ($LASTEXITCODE -eq 0) {
                 Write-Host "✓ GitHub 倉庫已創建並設置為遠程倉庫" -ForegroundColor Green
             } else {
@@ -148,32 +148,32 @@ if ($status) {
     Write-Host "發現未提交的文件:" -ForegroundColor Yellow
     Write-Host $status -ForegroundColor Gray
     Write-Host ""
-    
+
     $shouldCommit = Read-Host "是否要提交這些文件? (Y/n)"
     if ($shouldCommit -ne "n") {
         # 添加所有文件
         git add .
-        
+
         # 顯示將要提交的文件
         Write-Host ""
         Write-Host "將要提交的文件:" -ForegroundColor Green
         git status --short
         Write-Host ""
-        
+
         # 提交
         $commitMsg = Read-Host "請輸入提交訊息 (直接 Enter 使用預設訊息)"
         if (-not $commitMsg) {
             $commitMsg = "feat: add multi-device AI collaboration framework
 
 - Add complete documentation system (19 documents)
-- Add AI agent collaboration guides  
+- Add AI agent collaboration guides
 - Add discussion space management system
 - Add automation scripts and configurations
 - Add deployment guide for current device"
         }
-        
+
         git commit -m "$commitMsg"
-        
+
         if ($LASTEXITCODE -eq 0) {
             Write-Host "✓ 文件已提交" -ForegroundColor Green
         } else {
@@ -206,13 +206,13 @@ $hasRemote = git remote -v
 if ($hasRemote) {
     Write-Host ""
     $shouldPush = Read-Host "是否要推送到遠程倉庫? (Y/n)"
-    
+
     if ($shouldPush -ne "n") {
         Write-Host "正在推送..." -ForegroundColor Yellow
-        
+
         # 嘗試推送
         git push -u origin $currentBranch
-        
+
         if ($LASTEXITCODE -eq 0) {
             Write-Host "✓ 成功推送到遠程倉庫!" -ForegroundColor Green
         } else {
@@ -243,7 +243,7 @@ try {
     $npmVersion = npm --version
     Write-Host "✓ Node.js: $nodeVersion" -ForegroundColor Green
     Write-Host "✓ npm: $npmVersion" -ForegroundColor Green
-    
+
     # 檢查是否已安裝依賴
     if (-not (Test-Path "node_modules")) {
         Write-Host ""
@@ -251,7 +251,7 @@ try {
         if ($shouldInstall -ne "n") {
             Write-Host "正在安裝依賴..." -ForegroundColor Yellow
             npm install
-            
+
             if ($LASTEXITCODE -eq 0) {
                 Write-Host "✓ 依賴安裝成功" -ForegroundColor Green
             } else {
@@ -277,21 +277,21 @@ try {
     $extensions = code --list-extensions
     $hasCopilot = $extensions -match "github.copilot"
     $hasCopilotChat = $extensions -match "github.copilot-chat"
-    
+
     if ($hasCopilot) {
         Write-Host "✓ GitHub Copilot 已安裝" -ForegroundColor Green
     } else {
         Write-Host "× GitHub Copilot 未安裝" -ForegroundColor Red
         Write-Host "  安裝: code --install-extension GitHub.copilot" -ForegroundColor Gray
     }
-    
+
     if ($hasCopilotChat) {
         Write-Host "✓ GitHub Copilot Chat 已安裝" -ForegroundColor Green
     } else {
         Write-Host "× GitHub Copilot Chat 未安裝" -ForegroundColor Red
         Write-Host "  安裝: code --install-extension GitHub.copilot-chat" -ForegroundColor Gray
     }
-    
+
     if (-not $hasCopilot -or -not $hasCopilotChat) {
         Write-Host ""
         $shouldInstallExt = Read-Host "是否要安裝缺失的擴展? (Y/n)"

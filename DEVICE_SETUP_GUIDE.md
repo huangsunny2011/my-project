@@ -440,23 +440,23 @@ git push origin feature/user-registration-api
 2. 看到 "Compare & pull request" 按鈕，點擊
 3. 填寫 PR 表單：
    - Title: feat: User Registration API
-   - Description: 
+   - Description:
      實作用戶註冊後端 API
-     
+
      Changes:
      - ✅ POST /api/auth/register 端點
      - ✅ 用戶資料庫 schema
      - ✅ 密碼加密 (bcrypt)
      - ✅ 輸入驗證
      - ✅ 單元測試
-     
+
      參考討論：
      - discussions/team-project/ideas/2026-03-02-user-registration-feature.md
      - discussions/team-project/technical/2026-03-02-user-registration-api-implementation.md
-     
+
      @Developer-A 請審查
      @Developer-C 可以開始前端開發
-     
+
 4. 點擊 "Create pull request"
 ```
 
@@ -582,7 +582,7 @@ code .
 
 在 VSCode Chat：
 ```
-@workspace 根據後端 API (src/routes/auth.js) 
+@workspace 根據後端 API (src/routes/auth.js)
 實作用戶註冊前端表單
 
 要求：

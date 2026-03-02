@@ -2,8 +2,8 @@
 
 本指南專為 **d:\TEJ** 設備提供完整的部署步驟。
 
-**當前日期：** 2026年3月2日  
-**工作目錄：** `d:\TEJ`  
+**當前日期：** 2026年3月2日
+**工作目錄：** `d:\TEJ`
 **設備角色：** 待確認（可選擇設備 A、B 或 C）
 
 ---
@@ -522,7 +522,7 @@ Test-Path discussions\test-project\new-discussion.ps1
    git clone https://github.com/你的用戶名/multi-device-ai-collab.git
    cd multi-device-ai-collab
    npm install
-   
+
    # 配置他們的 Git 信息
    git config user.name "開發者名字"
    git config user.email "開發者郵箱"
@@ -571,10 +571,10 @@ npm install
 ```
 1. 確認 GitHub Copilot 訂閱已啟用
    https://github.com/settings/copilot
-   
+
 2. 在 VSCode 中重新登入
    Ctrl+Shift+P → "GitHub Copilot: Sign In"
-   
+
 3. 重新載入 VSCode
    Ctrl+Shift+P → "Reload Window"
 ```
@@ -601,10 +601,10 @@ Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process
 
 ## 📝 部署記錄
 
-**部署時間：** 2026年3月2日  
-**部署位置：** d:\TEJ  
-**設備角色：** _____________（填寫你選擇的角色）  
-**GitHub 倉庫：** _____________（填寫你的倉庫 URL）  
+**部署時間：** 2026年3月2日
+**部署位置：** d:\TEJ
+**設備角色：** _____________（填寫你選擇的角色）
+**GitHub 倉庫：** _____________（填寫你的倉庫 URL）
 **團隊成員：** _____________（如果是團隊，列出成員）
 
 ---

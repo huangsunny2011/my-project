@@ -54,7 +54,7 @@ GitHub Copilot AI Agent 可以：
    ```
 
 2. **使用 AI 分析需求**
-   
+
    在 VSCode 中打開討論文件，按 `Ctrl+I` 或打開 Chat 面板，輸入：
 
    ```
@@ -63,14 +63,14 @@ GitHub Copilot AI Agent 可以：
    2. 登入
    3. JWT token 管理
    4. 密碼重置
-   
+
    請分析：
    - 需要哪些技術棧
    - 資料庫 schema 設計
    - API 端點設計
    - 安全性考量
    - 前後端分工建議
-   
+
    將分析結果整理成技術方案寫入當前討論文件
    ```
 
@@ -80,13 +80,13 @@ GitHub Copilot AI Agent 可以：
 
    ```markdown
    ## 🤖 AI 技術分析
-   
+
    ### 技術棧建議
    - 後端：Node.js + Express + JWT
    - 資料庫：PostgreSQL
    - 密碼加密：bcrypt
    - 驗證：express-validator
-   
+
    ### 資料庫 Schema
    ```sql
    CREATE TABLE users (
@@ -97,14 +97,14 @@ GitHub Copilot AI Agent 可以：
      created_at TIMESTAMP DEFAULT NOW()
    );
    ```
-   
+
    ### API 端點設計
    - POST /api/auth/register - 用戶註冊
    - POST /api/auth/login - 用戶登入
    - POST /api/auth/refresh - 刷新 token
    - POST /api/auth/forgot-password - 忘記密碼
    - POST /api/auth/reset-password - 重置密碼
-   
+
    ### 分工建議
    - 設備 B：實作所有後端 API 和資料庫操作
    - 設備 C：實作前端註冊、登入表單和狀態管理
@@ -133,55 +133,55 @@ GitHub Copilot AI Agent 可以：
    **設備 A (Chat):**
    ```
    @workspace 查看 discussions/team-project/ideas/2026-03-02-user-authentication-system.md
-   
+
    作為架構師，評估這個方案：
    1. 是否有安全漏洞？
    2. 可擴展性如何？
    3. 是否需要添加 OAuth2 支援？
    4. 建議的改進點
-   
+
    將評估結果添加到討論文件的 "架構評估" 部分
    ```
 
    **設備 B (Chat):**
    ```
    @workspace 查看 discussions/team-project/ideas/2026-03-02-user-authentication-system.md
-   
+
    作為後端開發者，評估後端實作方案：
    1. 資料庫設計是否合理？
    2. 是否需要添加索引？
    3. Token 刷新機制如何實作？
    4. 需要多少工時？
-   
+
    將評估結果添加到討論文件的 "後端評估" 部分
    ```
 
    **設備 C (Chat):**
    ```
    @workspace 查看 discussions/team-project/ideas/2026-03-02-user-authentication-system.md
-   
+
    作為前端開發者，評估前端實作方案：
    1. 需要哪些 UI 組件？
    2. 如何管理認證狀態？
    3. 錯誤處理策略
    4. 需要多少工時？
-   
+
    將評估結果添加到討論文件的 "前端評估" 部分
    ```
 
 3. **合併所有 AI 建議**
-   
+
    各設備提交自己的評估後，設備 A 進行整合：
    ```
    @workspace 綜合 discussions/team-project/ideas/2026-03-02-user-authentication-system.md
    中所有的評估和建議，創建最終的實作計劃
-   
+
    包括：
    1. 確定的技術方案
    2. 詳細的任務分解
    3. 開發時程
    4. 風險評估
-   
+
    將結果保存到 discussions/team-project/architecture/ADR-001-user-authentication.md
    ```
 
@@ -202,7 +202,7 @@ GitHub Copilot AI Agent 可以：
    ```
    @workspace 根據 discussions/team-project/architecture/ADR-001-user-authentication.md
    中的方案，生成完整的用戶認證後端代碼
-   
+
    需要生成：
    1. 資料庫遷移文件 (migrations/001_create_users_table.sql)
    2. User model (src/models/User.js)
@@ -212,7 +212,7 @@ GitHub Copilot AI Agent 可以：
    6. 密碼工具函數 (src/utils/password.js)
    7. JWT 工具函數 (src/utils/jwt.js)
    8. 單元測試 (src/__tests__/auth.test.js)
-   
+
    遵循項目的代碼風格和最佳實踐，包含完整的錯誤處理和輸入驗證
    ```
 
@@ -225,15 +225,15 @@ GitHub Copilot AI Agent 可以：
    **示例對話：**
    ```
    你: 先生成 User model
-   
+
    AI: [生成 src/models/User.js 的完整代碼]
-   
+
    你: 生成認證控制器
-   
+
    AI: [生成 src/controllers/authController.js 的完整代碼]
-   
+
    你: 生成單元測試
-   
+
    AI: [生成 src/__tests__/auth.test.js 的完整代碼]
    ```
 
@@ -246,20 +246,20 @@ GitHub Copilot AI Agent 可以：
    ```
    @workspace 運行 npm test 後出現以下錯誤：
    [貼上錯誤訊息]
-   
+
    請分析錯誤原因並修復代碼
    ```
 
 5. **創建技術文檔**
    ```
    @workspace 為新完成的認證系統生成技術文檔
-   
+
    包括：
    1. API 端點說明
    2. 請求/響應範例
    3. 錯誤代碼說明
    4. 使用範例
-   
+
    保存到 docs/api/authentication.md
    ```
 
@@ -267,22 +267,22 @@ GitHub Copilot AI Agent 可以：
    ```powershell
    git add .
    git commit -m "feat: implement user authentication backend
-   
+
    - Add user model and database migration
    - Add JWT authentication middleware
    - Add auth routes and controllers
    - Add password hashing utilities
    - Add comprehensive unit tests
    - Add API documentation
-   
+
    Related: discussions/team-project/architecture/ADR-001-user-authentication.md"
-   
+
    git push origin feature/user-auth-backend
    gh pr create --title "feat: User Authentication Backend" --body "
    ## 實作內容
-   
+
    根據 ADR-001 實作完整的用戶認證後端系統
-   
+
    ## 主要變更
    - ✅ 用戶資料庫 schema
    - ✅ 註冊/登入 API
@@ -290,7 +290,7 @@ GitHub Copilot AI Agent 可以：
    - ✅ 密碼加密和驗證
    - ✅ 單元測試 (覆蓋率 95%)
    - ✅ API 文檔
-   
+
    ## 測試結果
    \`\`\`
    PASS  src/__tests__/auth.test.js
@@ -298,12 +298,12 @@ GitHub Copilot AI Agent 可以：
      ✓ User login (85ms)
      ✓ Token refresh (45ms)
      ✓ Password validation (30ms)
-   
+
    Test Suites: 1 passed, 1 total
    Tests:       15 passed, 15 total
    Coverage:    95.2%
    \`\`\`
-   
+
    @Developer-A 請審查
    "
    ```
@@ -322,7 +322,7 @@ GitHub Copilot AI Agent 可以：
    ```
    @workspace 根據 discussions/team-project/architecture/ADR-001-user-authentication.md
    和後端 API 文檔 docs/api/authentication.md，生成前端認證系統
-   
+
    需要生成：
    1. 認證上下文 (src/contexts/AuthContext.jsx)
    2. 註冊組件 (src/components/auth/RegisterForm.jsx)
@@ -331,7 +331,7 @@ GitHub Copilot AI Agent 可以：
    5. 認證 API 服務 (src/services/authService.js)
    6. 表單驗證邏輯 (src/utils/validation.js)
    7. 組件測試 (src/components/auth/__tests__/)
-   
+
    使用 React + Context API + Axios
    遵循項目的 UI 設計系統和代碼規範
    ```
@@ -339,13 +339,13 @@ GitHub Copilot AI Agent 可以：
 3. **生成配套的樣式文件**
    ```
    @workspace 為認證組件生成 CSS 樣式
-   
+
    要求：
    - 響應式設計
    - 支持淺色/深色模式
    - 符合項目設計系統
    - 包含載入狀態和錯誤狀態的樣式
-   
+
    保存到 src/components/auth/auth.module.css
    ```
 
@@ -358,7 +358,7 @@ GitHub Copilot AI Agent 可以：
 5. **使用 AI 生成測試**
    ```
    @workspace 為前端認證組件生成完整的測試
-   
+
    使用 React Testing Library 測試：
    1. 註冊表單的所有交互
    2. 登入表單的所有交互
@@ -392,7 +392,7 @@ GitHub Copilot AI Agent 可以：
    在 VSCode Chat 中：
    ```
    @workspace 全面審查當前分支的代碼
-   
+
    審查重點：
    1. 代碼品質和可讀性
    2. 安全性（特別是認證和密碼處理）
@@ -402,7 +402,7 @@ GitHub Copilot AI Agent 可以：
    6. 是否符合 discussions 中的需求
    7. SQL 注入、XSS 等安全漏洞
    8. 是否遵循 OWASP 最佳實踐
-   
+
    提供詳細的審查報告，包括：
    - 發現的問題（按嚴重性排序）
    - 具體的修改建議
@@ -413,16 +413,16 @@ GitHub Copilot AI Agent 可以：
 
    ```markdown
    ## 代碼審查報告
-   
+
    ### ✅ 優點
    1. 代碼結構清晰，符合項目規範
    2. 測試覆蓋率達 95%
    3. 錯誤處理完整
    4. 使用 bcrypt 正確處理密碼
-   
+
    ### 🔴 嚴重問題
    無
-   
+
    ### ⚠️ 需要改進
    1. **JWT Secret 配置**
       - 位置：src/utils/jwt.js:15
@@ -431,39 +431,39 @@ GitHub Copilot AI Agent 可以：
       ```javascript
       // 現在
       const secret = 'hardcoded-secret';
-      
+
       // 應改為
       const secret = process.env.JWT_SECRET;
       if (!secret) {
         throw new Error('JWT_SECRET must be configured');
       }
       ```
-   
+
    2. **Rate Limiting**
       - 位置：src/routes/auth.js
       - 問題：登入和註冊端點沒有速率限制
       - 建議：添加 express-rate-limit 中間件
       ```javascript
       const rateLimit = require('express-rate-limit');
-      
+
       const authLimiter = rateLimit({
         windowMs: 15 * 60 * 1000, // 15 minutes
         max: 5 // limit each IP to 5 requests per windowMs
       });
-      
+
       router.post('/login', authLimiter, authController.login);
       ```
-   
+
    3. **郵箱驗證**
       - 位置：src/controllers/authController.js:45
       - 問題：郵箱格式驗證使用簡單正則，可能不夠嚴格
       - 建議：使用 validator.js 庫
-   
+
    ### 💡 優化建議
    1. 添加登入嘗試次數限制（防止暴力破解）
    2. 考慮實作 refresh token rotation
    3. 添加用戶登入日誌記錄
-   
+
    ### 總體評分
    **8.5/10** - 高品質代碼，完成小修改後可以合併
    ```
@@ -494,9 +494,9 @@ GitHub Copilot AI Agent 可以：
 
    ```
    @workspace 根據以下審查意見修改代碼：
-   
+
    [貼上審查意見]
-   
+
    請逐項修改並解釋每個改動
    ```
 
@@ -518,12 +518,12 @@ GitHub Copilot AI Agent 可以：
    ```powershell
    git add .
    git commit -m "fix: address code review feedback
-   
+
    - Move JWT secret to environment variable
    - Add rate limiting to auth endpoints
    - Improve email validation
    - Add login attempt tracking"
-   
+
    git push origin feature/user-auth-backend
    ```
 
@@ -537,14 +537,14 @@ GitHub Copilot AI Agent 可以：
 
    ```
    @workspace 為用戶認證系統創建整合測試計劃
-   
+
    需要測試：
    1. 完整的註冊流程（前端 → 後端 → 資料庫）
    2. 登入流程
    3. Token 刷新機制
    4. 錯誤場景（錯誤密碼、重複郵箱等）
    5. 跨瀏覽器相容性
-   
+
    生成詳細的測試案例列表和測試腳本
    保存到 discussions/team-project/meetings/2026-03-02-auth-integration-test-plan.md
    ```
@@ -553,13 +553,13 @@ GitHub Copilot AI Agent 可以：
 
    ```
    @workspace 生成後端整合測試腳本
-   
+
    測試：
    1. 完整的 API 流程
    2. 資料庫事務
    3. 併發請求處理
    4. 錯誤恢復
-   
+
    保存到 tests/integration/auth.integration.test.js
    ```
 
@@ -567,7 +567,7 @@ GitHub Copilot AI Agent 可以：
 
    ```
    @workspace 使用 Playwright 生成端到端測試
-   
+
    測試完整的用戶旅程：
    1. 訪問註冊頁面
    2. 填寫表單
@@ -575,7 +575,7 @@ GitHub Copilot AI Agent 可以：
    4. 驗證成功訊息
    5. 登入
    6. 訪問受保護頁面
-   
+
    保存到 tests/e2e/auth.spec.js
    ```
 
@@ -584,16 +584,16 @@ GitHub Copilot AI Agent 可以：
    每個設備在討論空間記錄測試結果：
    ```
    @workspace 將以下測試結果整理成報告：
-   
+
    [貼上測試輸出]
-   
+
    格式化為表格，包括：
    - 測試項目
    - 預期結果
    - 實際結果
    - 狀態（通過/失敗）
    - 備註
-   
+
    添加到 discussions/team-project/meetings/2026-03-02-auth-integration-test-results.md
    ```
 
@@ -905,7 +905,7 @@ AI: @workspace 分析測試失敗原因...
 
 ### Q1: AI 生成的代碼品質如何保證？
 
-**答：** 
+**答：**
 1. 永遠要人類審查
 2. 運行完整的測試套件
 3. 使用 AI 互相審查（設備 A 的 AI 審查設備 B 的代碼）
@@ -974,6 +974,6 @@ AI: @workspace 分析測試失敗原因...
 
 ---
 
-**最後更新：** 2026年3月2日  
-**作者：** AI Collaboration Framework Team  
+**最後更新：** 2026年3月2日
+**作者：** AI Collaboration Framework Team
 **版本：** 1.0

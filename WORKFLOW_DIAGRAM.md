@@ -9,7 +9,7 @@
 ```mermaid
 graph TB
     Start([開始新功能])
-    
+
     subgraph Device_A["🖥️ 設備 A - 需求分析"]
         A1[1. 拉取最新代碼<br/>git pull]
         A2[2. 創建討論空間<br/>new-discussion.ps1]
@@ -17,7 +17,7 @@ graph TB
         A4[4. 生成需求文檔<br/>保存到 discussions/]
         A5[5. 提交討論<br/>git commit & push]
     end
-    
+
     subgraph Device_B["💻 設備 B - 後端開發"]
         B1[1. 拉取討論<br/>git pull]
         B2[2. 閱讀需求<br/>cat discussions/...]
@@ -25,7 +25,7 @@ graph TB
         B4[4. 運行測試<br/>npm test]
         B5[5. 創建 PR<br/>git push & gh pr create]
     end
-    
+
     subgraph Device_C["🖥️ 設備 C - 前端開發"]
         C1[1. 拉取討論<br/>git pull]
         C2[2. 閱讀需求<br/>cat discussions/...]
@@ -33,40 +33,40 @@ graph TB
         C4[4. 本地測試<br/>npm run dev]
         C5[5. 創建 PR<br/>git push & gh pr create]
     end
-    
+
     subgraph Device_A_Review["🖥️ 設備 A - 代碼審查"]
         A6[1. 拉取分支<br/>git fetch]
         A7[2. AI 審查後端<br/>@workspace 審查...]
         A8[3. AI 審查前端<br/>@workspace 審查...]
         A9[4. 提供反饋<br/>GitHub PR 評論]
     end
-    
+
     subgraph Integration["🔄 整合階段"]
         I1[設備 B/C 根據反饋修正]
         I2[設備 A 批准 PR]
         I3[合併到主分支<br/>git merge]
         I4[CI/CD 自動部署]
     end
-    
+
     Complete([✅ 功能完成])
-    
+
     Start --> A1
     A1 --> A2
     A2 --> A3
     A3 --> A4
     A4 --> A5
-    
+
     A5 --> B1
     A5 --> C1
-    
+
     B1 --> B2 --> B3 --> B4 --> B5
     C1 --> C2 --> C3 --> C4 --> C5
-    
+
     B5 --> A6
     C5 --> A6
-    
+
     A6 --> A7 --> A8 --> A9
-    
+
     A9 --> I1
     I1 --> I2
     I2 --> I3
@@ -85,31 +85,31 @@ graph LR
         R2[🤖 AI 分析]
         R3[📄 生成規格]
     end
-    
+
     subgraph Stage2["階段 2: 設計"]
         D1[🏗️ 架構討論]
         D2[🤖 AI 設計]
         D3[📐 生成 ADR]
     end
-    
+
     subgraph Stage3["階段 3: 開發"]
         C1[💻 AI 生成代碼]
         C2[🧪 AI 生成測試]
         C3[🔍 人類審查]
     end
-    
+
     subgraph Stage4["階段 4: 審查"]
         V1[🤖 AI 代碼審查]
         V2[👥 人類審查]
         V3[✅ 批准合併]
     end
-    
+
     subgraph Stage5["階段 5: 部署"]
         P1[🚀 自動部署]
         P2[📊 監控]
         P3[📝 更新文檔]
     end
-    
+
     R1 --> R2 --> R3 --> D1
     D1 --> D2 --> D3 --> C1
     C1 --> C2 --> C3 --> V1
@@ -125,12 +125,12 @@ graph LR
 graph TD
     subgraph Roles["角色和職責"]
         A["🖥️ 設備 A<br/>產品和架構<br/>────────────<br/>• 需求分析<br/>• 架構設計<br/>• 代碼審查<br/>• 最終整合"]
-        
+
         B["💻 設備 B<br/>後端開發<br/>────────────<br/>• API 實作<br/>• 資料庫設計<br/>• 單元測試<br/>• 性能優化"]
-        
+
         C["🖥️ 設備 C<br/>前端開發<br/>────────────<br/>• UI 實作<br/>• 組件開發<br/>• E2E 測試<br/>• 響應式設計"]
     end
-    
+
     subgraph AI["🤖 AI Agent 協助"]
         AI1["需求分析"]
         AI2["代碼生成"]
@@ -138,21 +138,21 @@ graph TD
         AI4["代碼審查"]
         AI5["文檔更新"]
     end
-    
+
     subgraph Platform["📦 GitHub 平台"]
         G1["代碼倉庫"]
         G2["Pull Requests"]
         G3["Discussions"]
         G4["Actions CI/CD"]
     end
-    
+
     A --> AI1
     B --> AI2
     C --> AI2
     A --> AI4
     B & C --> AI3
     A & B & C --> AI5
-    
+
     AI1 & AI2 & AI3 & AI4 & AI5 --> G1
     G1 --> G2
     G2 --> G3
@@ -170,26 +170,26 @@ gantt
     title 設備 A 的一天
     dateFormat HH:mm
     axisFormat %H:%M
-    
+
     section 需求分析
     拉取更新           :09:00, 10m
     與團隊討論         :09:10, 30m
     AI 分析需求        :09:40, 20m
-    
+
     section 創建討論
     創建討論空間       :10:00, 10m
     撰寫需求文檔       :10:10, 30m
     提交推送           :10:40, 10m
-    
+
     section 午休
     休息               :12:00, 60m
-    
+
     section 代碼審查
     拉取 PR            :13:00, 10m
     AI 審查後端        :13:10, 30m
     AI 審查前端        :13:40, 30m
     提供反饋           :14:10, 20m
-    
+
     section 整合
     修正反饋           :15:00, 60m
     最終測試           :16:00, 30m
@@ -203,30 +203,30 @@ gantt
     title 設備 B 的一天
     dateFormat HH:mm
     axisFormat %H:%M
-    
+
     section 準備
     拉取討論           :10:00, 10m
     閱讀需求           :10:10, 20m
     理解架構           :10:30, 20m
-    
+
     section 後端開發
     創建開發分支       :10:50, 5m
     AI 生成模型        :10:55, 20m
     AI 生成路由        :11:15, 20m
     AI 生成控制器      :11:35, 25m
-    
+
     section 午休
     休息               :12:00, 60m
-    
+
     section 測試
     AI 生成測試        :13:00, 30m
     運行測試           :13:30, 20m
     修復錯誤           :13:50, 40m
-    
+
     section 提交
     創建 PR            :14:30, 15m
     等待審查           :14:45, 75m
-    
+
     section 修正
     根據反饋修正       :16:00, 60m
 ```
@@ -238,30 +238,30 @@ gantt
     title 設備 C 的一天
     dateFormat HH:mm
     axisFormat %H:%M
-    
+
     section 準備
     拉取討論           :10:00, 10m
     閱讀需求           :10:10, 20m
     查看設計稿         :10:30, 20m
-    
+
     section 前端開發
     創建開發分支       :10:50, 5m
     AI 生成組件        :10:55, 30m
     AI 生成樣式        :11:25, 20m
     AI 生成邏輯        :11:45, 15m
-    
+
     section 午休
     休息               :12:00, 60m
-    
+
     section 測試
     本地開發測試       :13:00, 40m
     AI 生成 E2E 測試   :13:40, 30m
     瀏覽器測試         :14:10, 20m
-    
+
     section 提交
     創建 PR            :14:30, 15m
     等待審查           :14:45, 75m
-    
+
     section 修正
     根據反饋修正       :16:00, 60m
 ```
@@ -274,23 +274,23 @@ gantt
 gantt
     title 2 週 Sprint 開發週期
     dateFormat YYYY-MM-DD
-    
+
     section Sprint 規劃
     Sprint 規劃會議    :milestone, 2024-01-01, 0d
     故事拆分           :2024-01-01, 1d
-    
+
     section Week 1
     需求分析 (設備A)   :2024-01-02, 2d
     架構設計 (設備A)   :2024-01-03, 2d
     後端開發 (設備B)   :2024-01-04, 3d
     前端開發 (設備C)   :2024-01-04, 3d
-    
+
     section Week 2
     代碼審查 (設備A)   :2024-01-08, 2d
     修正優化 (B & C)   :2024-01-09, 2d
     整合測試 (全員)    :2024-01-11, 2d
     部署上線           :milestone, 2024-01-12, 0d
-    
+
     section 回顧
     Sprint 回顧        :milestone, 2024-01-12, 0d
 ```
@@ -305,36 +305,36 @@ gitgraph
     branch develop
     checkout develop
     commit id: "Setup project"
-    
+
     branch feature/user-auth-backend
     checkout feature/user-auth-backend
     commit id: "設備B: Add user model"
     commit id: "設備B: Add auth routes"
     commit id: "設備B: Add tests"
-    
+
     checkout develop
     branch feature/user-auth-frontend
     checkout feature/user-auth-frontend
     commit id: "設備C: Add login page"
     commit id: "設備C: Add signup form"
     commit id: "設備C: Add E2E tests"
-    
+
     checkout develop
     merge feature/user-auth-backend tag: "PR #1 merged"
     merge feature/user-auth-frontend tag: "PR #2 merged"
-    
+
     checkout main
     merge develop tag: "v1.1.0"
-    
+
     checkout develop
     branch feature/payment
     checkout feature/payment
     commit id: "設備B: Payment API"
     commit id: "設備C: Payment UI"
-    
+
     checkout develop
     merge feature/payment tag: "PR #3 merged"
-    
+
     checkout main
     merge develop tag: "v1.2.0"
 ```
@@ -346,7 +346,7 @@ gitgraph
 ```mermaid
 graph TB
     Root[discussions/]
-    
+
     subgraph Project["project-name/"]
         Ideas[💡 ideas/<br/>功能提案、改進建議]
         Tech[🔧 technical/<br/>技術討論、實作方案]
@@ -355,14 +355,14 @@ graph TB
         Trouble[🐛 troubleshooting/<br/>問題排查、Bug 分析]
         Review[👀 reviews/<br/>代碼審查、PR 討論]
         Notes[📝 notes/<br/>開發日誌、筆記]
-        
+
         Helper[🛠️ Helper Scripts]
         Helper --> NewDisc[new-discussion.ps1]
         Helper --> Search[search-discussion.ps1]
         Helper --> Stats[stats.ps1]
         Helper --> Archive[archive-discussion.ps1]
     end
-    
+
     Root --> Project
     Project --> Ideas
     Project --> Tech
@@ -371,7 +371,7 @@ graph TB
     Project --> Trouble
     Project --> Review
     Project --> Notes
-    
+
     style Ideas fill:#ffe6e6
     style Tech fill:#e6f3ff
     style Arch fill:#e6ffe6
@@ -407,7 +407,7 @@ gantt
     title 功能開發時間對比
     dateFormat X
     axisFormat %s
-    
+
     section 傳統開發
     需求分析        :0, 4h
     設計            :4h, 4h
@@ -417,7 +417,7 @@ gantt
     代碼審查        :32h, 4h
     修正優化        :36h, 4h
     文檔更新        :40h, 4h
-    
+
     section AI 協作開發
     AI 需求分析     :done, 0, 2h
     AI 設計輔助     :done, 2h, 2h
@@ -429,8 +429,8 @@ gantt
     AI 文檔生成     :done, 13h, 1h
 ```
 
-**傳統開發：** 約 44 小時（5.5 天）  
-**AI 協作開發：** 約 14 小時（1.75 天）  
+**傳統開發：** 約 44 小時（5.5 天）
+**AI 協作開發：** 約 14 小時（1.75 天）
 **效率提升：** 約 **70%** 🚀
 
 ---
