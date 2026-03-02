@@ -1,6 +1,6 @@
 # Script Encoding Issue - Prevention Guide
 
-## Problem 
+## Problem
 The PowerShell scripts (`create-discussion-space.ps1` and `deploy-helper.ps1`) were getting corrupted by VSCode's auto-formatter, causing encoding issues with Chinese characters and malformed code blocks.
 
 ## Root Cause
@@ -11,7 +11,7 @@ The PowerShell scripts (`create-discussion-space.ps1` and `deploy-helper.ps1`) w
 ## Solution Applied
 Scripts were rebuilt using:
 - Simple English comments only
-- Line arrays instead of here-strings  
+- Line arrays instead of here-strings
 - `$lines -join "\`n"` for multi-line content
 - UTF-8 encoding without BOM
 
@@ -85,5 +85,5 @@ Remove-Item discussions\test -Recurse -Force
 
 ---
 
-**Last Fixed**: 2026-03-02  
+**Last Fixed**: 2026-03-02
 **Status**: ✅ RESOLVED

@@ -41,13 +41,13 @@ $gitUserEmail = git config user.email
 if (-not $gitUserName -or -not $gitUserEmail) {
     Write-Host "! Git user information not set" -ForegroundColor Red
     Write-Host ""
-    
+
     $userName = Read-Host "Enter your Git username"
     $userEmail = Read-Host "Enter your Git email"
-    
+
     git config user.name "$userName"
     git config user.email "$userEmail"
-    
+
     Write-Host "Success: Git user information set" -ForegroundColor Green
     Write-Host "  Name: $userName" -ForegroundColor Gray
     Write-Host "  Email: $userEmail" -ForegroundColor Gray
@@ -73,9 +73,9 @@ if (-not $remotes) {
     Write-Host "  2. Auto-create repo with GitHub CLI (requires gh)" -ForegroundColor Gray
     Write-Host "  3. Skip for now" -ForegroundColor Gray
     Write-Host ""
-    
+
     $choice = Read-Host "Select option (1/2/3)"
-    
+
     switch ($choice) {
         "1" {
             Write-Host ""
@@ -83,7 +83,7 @@ if (-not $remotes) {
             Write-Host "  HTTPS: https://github.com/username/repo.git" -ForegroundColor Gray
             Write-Host "  SSH:   git@github.com:username/repo.git" -ForegroundColor Gray
             Write-Host ""
-            
+
             $repoUrl = Read-Host "Enter repository URL"
             git remote add origin $repoUrl
             Write-Host "Success: Remote repository added" -ForegroundColor Green
@@ -92,13 +92,13 @@ if (-not $remotes) {
             Write-Host ""
             $repoName = Read-Host "Enter repository name (e.g., multi-device-ai-collab)"
             $repoType = Read-Host "Repository type: public or private? (enter public or private)"
-            
+
             if ($repoType -eq "public") {
                 gh repo create $repoName --public --source=. --remote=origin
             } else {
                 gh repo create $repoName --private --source=. --remote=origin
             }
-            
+
             if ($LASTEXITCODE -eq 0) {
                 Write-Host "Success: GitHub repository created and configured" -ForegroundColor Green
             } else {
@@ -130,7 +130,7 @@ Write-Host "Step 3: Checking file status..." -ForegroundColor Yellow
 # Ensure .gitignore exists
 if (-not (Test-Path ".gitignore")) {
     Write-Host "! .gitignore not found, creating..." -ForegroundColor Yellow
-    
+
     $gitignoreLines = @(
         "node_modules/",
         ".env",
@@ -142,7 +142,7 @@ if (-not (Test-Path ".gitignore")) {
         ".vscode/.history",
         "*.backup"
     )
-    
+
     $gitignoreLines -join "`n" | Out-File -FilePath ".gitignore" -Encoding utf8
     Write-Host "Success: .gitignore created" -ForegroundColor Green
 }
@@ -153,18 +153,18 @@ if ($status) {
     Write-Host "Found uncommitted files:" -ForegroundColor Yellow
     Write-Host $status -ForegroundColor Gray
     Write-Host ""
-    
+
     $shouldCommit = Read-Host "Commit these files? (Y/n)"
     if ($shouldCommit -ne "n") {
         # Add all files
         git add .
-        
+
         # Show files to be committed
         Write-Host ""
         Write-Host "Files to be committed:" -ForegroundColor Green
         git status --short
         Write-Host ""
-        
+
         # Commit
         $commitMsg = Read-Host "Enter commit message (press Enter for default)"
         if (-not $commitMsg) {
@@ -179,9 +179,9 @@ if ($status) {
             )
             $commitMsg = $commitLines -join "`n"
         }
-        
+
         git commit -m "$commitMsg"
-        
+
         if ($LASTEXITCODE -eq 0) {
             Write-Host "Success: Files committed" -ForegroundColor Green
         } else {
@@ -214,13 +214,13 @@ $hasRemote = git remote -v
 if ($hasRemote) {
     Write-Host ""
     $shouldPush = Read-Host "Push to remote repository? (Y/n)"
-    
+
     if ($shouldPush -ne "n") {
         Write-Host "Pushing..." -ForegroundColor Yellow
-        
+
         # Try to push
         git push -u origin $currentBranch
-        
+
         if ($LASTEXITCODE -eq 0) {
             Write-Host "Success: Pushed to remote repository!" -ForegroundColor Green
         } else {
@@ -249,7 +249,7 @@ try {
     $npmVersion = npm --version
     Write-Host "Success: Node.js: $nodeVersion" -ForegroundColor Green
     Write-Host "Success: npm: $npmVersion" -ForegroundColor Green
-    
+
     # Check if dependencies are installed
     if (-not (Test-Path "node_modules")) {
         Write-Host ""
@@ -257,7 +257,7 @@ try {
         if ($shouldInstall -ne "n") {
             Write-Host "Installing dependencies..." -ForegroundColor Yellow
             npm install
-            
+
             if ($LASTEXITCODE -eq 0) {
                 Write-Host "Success: Dependencies installed" -ForegroundColor Green
             } else {
@@ -283,21 +283,21 @@ try {
     $extensions = code --list-extensions 2>&1
     $hasCopilot = $extensions -match "github.copilot"
     $hasCopilotChat = $extensions -match "github.copilot-chat"
-    
+
     if ($hasCopilot) {
         Write-Host "Success: GitHub Copilot installed" -ForegroundColor Green
     } else {
         Write-Host "Error: GitHub Copilot not installed" -ForegroundColor Red
         Write-Host "  Install: code --install-extension GitHub.copilot" -ForegroundColor Gray
     }
-    
+
     if ($hasCopilotChat) {
         Write-Host "Success: GitHub Copilot Chat installed" -ForegroundColor Green
     } else {
         Write-Host "Error: GitHub Copilot Chat not installed" -ForegroundColor Red
         Write-Host "  Install: code --install-extension GitHub.copilot-chat" -ForegroundColor Gray
     }
-    
+
     if (-not $hasCopilot -or -not $hasCopilotChat) {
         Write-Host ""
         $shouldInstallExt = Read-Host "Install missing extensions? (Y/n)"

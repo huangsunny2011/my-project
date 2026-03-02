@@ -1,7 +1,7 @@
 # GitHub Push Authentication Guide
 
 ## Current Issue
-Push failed with error: `Permission denied to acronhuang`  
+Push failed with error: `Permission denied to acronhuang`
 Target repository: https://github.com/huangsunny2011/my-project.git
 
 ## Why This Happens
@@ -28,7 +28,7 @@ Target repository: https://github.com/huangsunny2011/my-project.git
    - **Select scopes**:
      - ✅ **repo** (Full control of private repositories)
        - repo:status
-       - repo_deployment  
+       - repo_deployment
        - public_repo
        - repo:invite
        - security_events
@@ -83,7 +83,7 @@ This should now work! ✅
    ```powershell
    ssh-keygen -t ed25519 -C "huangsunny2011@users.noreply.github.com"
    ```
-   Press Enter to accept default location  
+   Press Enter to accept default location
    Enter passphrase (optional but recommended)
 
 2. **Add SSH Key to GitHub**
@@ -91,7 +91,7 @@ This should now work! ✅
    # Copy public key to clipboard
    Get-Content ~/.ssh/id_ed25519.pub | Set-Clipboard
    ```
-   
+
    Then:
    - Go to: https://github.com/settings/keys
    - Click **"New SSH key"**
@@ -162,7 +162,7 @@ After successful push, verify at:
 
 **Files to push**: 39 files including:
 - 20 documentation files
-- 3 working PowerShell scripts  
+- 3 working PowerShell scripts
 - Configuration files
 - Example discussion space (my-project)
 
@@ -203,5 +203,5 @@ If you're still having issues:
 
 ---
 
-**Created**: 2026-03-02  
+**Created**: 2026-03-02
 **Status**: Awaiting token creation and push

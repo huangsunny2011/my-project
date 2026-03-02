@@ -43,14 +43,14 @@ function Show-Menu {
 
 function Start-ManualSync {
     Write-Host "`n🔄 手动同步中..." -ForegroundColor Cyan
-    
+
     # 拉取更新
     Write-Host "  📥 拉取远程更新..." -NoNewline
     $pullResult = git pull origin main --no-edit 2>&1
-    
+
     if ($LASTEXITCODE -eq 0) {
         Write-Host " ✅" -ForegroundColor Green
-        
+
         if ($pullResult -notmatch "Already up to date") {
             $files = git diff --name-only HEAD@{1} HEAD
             $count = ($files | Measure-Object -Line).Lines
@@ -64,23 +64,23 @@ function Start-ManualSync {
         Write-Host " ❌" -ForegroundColor Red
         Write-Host "  错误: $pullResult" -ForegroundColor Red
     }
-    
+
     # 检查本地变化
     $status = git status --porcelain
     if ($status) {
         $count = ($status | Measure-Object -Line).Lines
         Write-Host "`n  📝 发现 $count 个本地变化" -ForegroundColor Yellow
         Write-Host "  是否提交并推送? [Y/N]: " -NoNewline -ForegroundColor Cyan
-        
+
         $response = Read-Host
         if ($response -eq 'Y' -or $response -eq 'y') {
             git add .
             $commitMsg = "manual-sync: $DeviceName at $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')"
             git commit -m $commitMsg
-            
+
             Write-Host "  🔼 推送到 GitHub..." -NoNewline
             git push origin main 2>&1 | Out-Null
-            
+
             if ($LASTEXITCODE -eq 0) {
                 Write-Host " ✅" -ForegroundColor Green
             }
@@ -92,7 +92,7 @@ function Start-ManualSync {
     else {
         Write-Host "  ✓ 无本地变化" -ForegroundColor Gray
     }
-    
+
     Write-Host "`n✅ 同步完成！" -ForegroundColor Green
     Write-Host "`n按任意键返回菜单..."
     $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
@@ -101,21 +101,21 @@ function Start-ManualSync {
 function Show-SyncStatus {
     Write-Host "`n📊 检查同步进程状态..." -ForegroundColor Cyan
     Write-Host ""
-    
+
     # 检查是否有 auto-sync 进程
-    $syncProcesses = Get-Process powershell -ErrorAction SilentlyContinue | 
+    $syncProcesses = Get-Process powershell -ErrorAction SilentlyContinue |
         Where-Object { $_.CommandLine -like "*auto-sync.ps1*" -or $_.CommandLine -like "*watch-sync.ps1*" }
-    
+
     if ($syncProcesses) {
         Write-Host "  ✅ 发现运行中的同步进程:" -ForegroundColor Green
         $syncProcesses | ForEach-Object {
             Write-Host "     - 进程 ID: $($_.Id)" -ForegroundColor White
             Write-Host "       启动时间: $($_.StartTime)" -ForegroundColor Gray
         }
-        
+
         Write-Host "`n  是否停止这些进程? [Y/N]: " -NoNewline -ForegroundColor Yellow
         $response = Read-Host
-        
+
         if ($response -eq 'Y' -or $response -eq 'y') {
             $syncProcesses | Stop-Process -Force
             Write-Host "  ✓ 已停止同步进程" -ForegroundColor Green
@@ -124,14 +124,14 @@ function Show-SyncStatus {
     else {
         Write-Host "  ℹ️  没有运行中的同步进程" -ForegroundColor Gray
     }
-    
+
     # 显示 Git 状态
     Write-Host "`n  Git 仓库状态:" -ForegroundColor Cyan
     git status --short
-    
+
     Write-Host "`n  最近的提交:" -ForegroundColor Cyan
     git log --oneline -5
-    
+
     Write-Host "`n按任意键返回菜单..."
     $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
 }
@@ -139,9 +139,9 @@ function Show-SyncStatus {
 # 主循环
 while ($true) {
     Show-Menu
-    
+
     $choice = Read-Host "请选择"
-    
+
     switch ($choice.ToUpper()) {
         '1' {
             Write-Host "`n启动定时同步（每 5 分钟）..." -ForegroundColor Green

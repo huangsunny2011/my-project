@@ -206,23 +206,23 @@ Write-Host "   监控 AI 任务，间隔 $CheckIntervalMinutes 分钟`n" -Foregr
 while ($true) {
     # 1. 同步最新内容
     git pull origin main --quiet 2>&1 | Out-Null
-    
+
     # 2. 检查待处理任务
     $pendingTasks = Get-ChildItem "$aiWorkspace/tasks/*-pending.md" -ErrorAction SilentlyContinue
-    
+
     if ($pendingTasks) {
         foreach ($task in $pendingTasks) {
             Write-Host "[$(Get-Date -Format 'HH:mm:ss')] 📋 发现新任务: $($task.Name)" -ForegroundColor Yellow
-            
+
             # 打开任务文件在 VSCode 中
             code $task.FullName
-            
+
             # 在 VSCode 中显示提示消息
             $content = Get-Content $task.FullName -Raw
-            
+
             # 创建 AI 提示文件
             $promptFile = "$aiWorkspace/.ai-prompt-$DeviceName.md"
-            
+
             $prompt = @"
 # 🤖 AI 任务通知
 
@@ -242,7 +242,7 @@ $content
 ## 🎯 请执行以下操作：
 
 1. **阅读任务**: 理解用户需求和其他 AI 的讨论
-2. **继续工作**: 
+2. **继续工作**:
    - 如果是新任务：分析需求，生成计划
    - 如果有问题：回答其他 AI 的问题
    - 如果需要实现：编写代码
@@ -250,7 +250,7 @@ $content
 3. **更新任务文件**: 在任务文件末尾追加你的工作内容
    - 使用格式: ``### [$DeviceName AI] - $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')``
    - 记录你的思考、决策和输出
-4. **提交更改**: 
+4. **提交更改**:
    - ``git add .``
    - ``git commit -m "ai: $DeviceName 工作在任务 $($task.BaseName)"``
    - ``git push origin main``
@@ -266,47 +266,47 @@ $content
 
 **按 Ctrl+I 打开 Copilot Chat 开始工作！**
 "@
-            
+
             Set-Content -Path $promptFile -Value $prompt -Encoding UTF8
             code $promptFile
-            
+
             Write-Host "   ✅ 已打开任务文件，请用 Copilot 完成任务" -ForegroundColor Green
             Write-Host "   📝 任务文件: $($task.FullName)" -ForegroundColor Cyan
             Write-Host "   🤖 AI 提示: $promptFile`n" -ForegroundColor Cyan
         }
     }
-    
+
     # 3. 检查需要审查的代码
     $reviewTasks = Get-ChildItem "$aiWorkspace/tasks/*-review.md" -ErrorAction SilentlyContinue
-    
+
     if ($reviewTasks) {
         foreach ($task in $reviewTasks) {
             Write-Host "[$(Get-Date -Format 'HH:mm:ss')] 🔍 需要代码审查: $($task.Name)" -ForegroundColor Cyan
             code $task.FullName
         }
     }
-    
+
     # 4. 检查更新的对话
     $lastCheckFile = ".last-ai-check-$DeviceName"
     $lastCheckTime = Get-Date
-    
+
     if (Test-Path $lastCheckFile) {
         $lastCheckTime = Get-Date (Get-Content $lastCheckFile)
     }
-    
+
     $newConversations = Get-ChildItem "$aiWorkspace/conversations/*.md" -ErrorAction SilentlyContinue |
         Where-Object { $_.LastWriteTime -gt $lastCheckTime }
-    
+
     if ($newConversations) {
         Write-Host "[$(Get-Date -Format 'HH:mm:ss')] 💬 发现新的 AI 对话" -ForegroundColor Magenta
         foreach ($conv in $newConversations) {
             Write-Host "   - $($conv.Name)" -ForegroundColor White
         }
     }
-    
+
     # 更新检查时间
     Get-Date -Format "o" | Set-Content $lastCheckFile
-    
+
     # 等待下一次检查
     Write-Host "[$(Get-Date -Format 'HH:mm:ss')] 😴 等待 $CheckIntervalMinutes 分钟..`n" -ForegroundColor Gray
     Start-Sleep -Seconds ($CheckIntervalMinutes * 60)
@@ -322,10 +322,10 @@ $content
 param(
     [Parameter(Mandatory=$true)]
     [string]$Title,
-    
+
     [Parameter(Mandatory=$true)]
     [string]$Description,
-    
+
     [string]$Priority = "NORMAL"  # LOW / NORMAL / HIGH
 )
 
@@ -450,7 +450,7 @@ Start-Process powershell -ArgumentList "-File", "ai-agent.ps1", "-DeviceName", "
 - 前端: React 登录表单
 - 后端: Node.js API
 - 数据库: MongoDB
-- 功能: 
+- 功能:
   * 用户名密码登录
   * JWT 令牌
   * 记住我功能
@@ -526,7 +526,7 @@ Start-Process powershell -ArgumentList "-File", "ai-agent.ps1", "-DeviceName", "
 
 #### 在设备 2 的 Copilot Chat：
 ```
-你: "@workspace 阅读 ai-workspace/tasks/task-001-pending.md 和 
+你: "@workspace 阅读 ai-workspace/tasks/task-001-pending.md 和
      ai-workspace/.ai-prompt-Laptop.md，完成任务"
 
 Copilot: 我已分析任务。这是我的计划：
@@ -584,7 +584,7 @@ git push
 
 #### 在设备 1 的 Copilot Chat：
 ```
-你: "@workspace 审查 ai-workspace/tasks/task-001-review.md 
+你: "@workspace 审查 ai-workspace/tasks/task-001-review.md
      中 Laptop AI 的实现，提供改进建议"
 
 Copilot: 我已审查代码。整体实现很好！建议：
@@ -803,7 +803,7 @@ $aiActivity = @{}
 foreach ($task in $tasks) {
     $content = Get-Content $task.FullName -Raw
     $matches = [regex]::Matches($content, '\[(.+?) AI\]')
-    
+
     foreach ($match in $matches) {
         $aiName = $match.Groups[1].Value
         if ($aiActivity.ContainsKey($aiName)) {

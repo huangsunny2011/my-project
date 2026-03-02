@@ -144,44 +144,44 @@ Write-Host "按 Ctrl+C 停止`n" -ForegroundColor Yellow
 
 while ($true) {
     $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-    
+
     try {
         # 1. 拉取远程更新
         Write-Host "[$timestamp] 🔽 拉取远程更新..." -ForegroundColor Cyan
         $pullResult = git pull origin main 2>&1
-        
+
         if ($pullResult -match "Already up to date") {
             Write-Host "[$timestamp] ✓ 已是最新版本" -ForegroundColor Gray
         } else {
             Write-Host "[$timestamp] ✅ 成功拉取更新：" -ForegroundColor Green
             Write-Host $pullResult -ForegroundColor White
-            
+
             # 触发通知
             Write-Host "`n🔔 检测到新更新！请查看文件变化。`n" -ForegroundColor Yellow
         }
-        
+
         # 2. 检查本地变化
         $status = git status --porcelain
-        
+
         if ($status) {
             Write-Host "[$timestamp] 📝 检测到本地变化" -ForegroundColor Cyan
-            
+
             # 显示变化的文件
             $changedFiles = $status | ForEach-Object { $_.Substring(3) }
             Write-Host "变化的文件：" -ForegroundColor Yellow
             $changedFiles | ForEach-Object { Write-Host "  - $_" -ForegroundColor White }
-            
+
             # 自动提交
             git add .
             $commitMsg = "auto-sync: $DeviceName at $timestamp"
             git commit -m $commitMsg
-            
+
             Write-Host "[$timestamp] 💾 已自动提交" -ForegroundColor Green
-            
+
             # 推送到远程
             Write-Host "[$timestamp] 🔼 推送到远程..." -ForegroundColor Cyan
             $pushResult = git push origin main 2>&1
-            
+
             if ($LASTEXITCODE -eq 0) {
                 Write-Host "[$timestamp] ✅ 成功推送到 GitHub" -ForegroundColor Green
                 Write-Host "`n🎉 其他设备将在下次同步时收到更新！`n" -ForegroundColor Yellow
@@ -192,11 +192,11 @@ while ($true) {
         } else {
             Write-Host "[$timestamp] ✓ 无本地变化" -ForegroundColor Gray
         }
-        
+
     } catch {
         Write-Host "[$timestamp] ❌ 同步出错：$_" -ForegroundColor Red
     }
-    
+
     # 等待下一个周期
     Write-Host "[$timestamp] 😴 等待 $IntervalMinutes 分钟...`n" -ForegroundColor Gray
     Start-Sleep -Seconds ($IntervalMinutes * 60)
@@ -289,7 +289,7 @@ Add-Type -AssemblyName System.Windows.Forms
 
 function Show-Notification {
     param([string]$Title, [string]$Message)
-    
+
     $notification = New-Object System.Windows.Forms.NotifyIcon
     $notification.Icon = [System.Drawing.SystemIcons]::Information
     $notification.BalloonTipIcon = [System.Windows.Forms.ToolTipIcon]::Info
@@ -297,7 +297,7 @@ function Show-Notification {
     $notification.BalloonTipText = $Message
     $notification.Visible = $true
     $notification.ShowBalloonTip(5000)
-    
+
     Start-Sleep -Seconds 2
     $notification.Dispose()
 }
@@ -307,34 +307,34 @@ Show-Notification "Git 自动同步" "已启动，间隔 $IntervalMinutes 分钟
 
 while ($true) {
     $timestamp = Get-Date -Format "HH:mm:ss"
-    
+
     # 拉取更新
     $pullResult = git pull origin main 2>&1
-    
+
     if ($pullResult -notmatch "Already up to date") {
         # 有新更新
         $files = git diff --name-only HEAD@{1} HEAD
         $fileCount = ($files | Measure-Object -Line).Lines
-        
+
         Show-Notification "📥 收到新更新" "来自其他设备，更新了 $fileCount 个文件"
         Write-Host "[$timestamp] ✅ 拉取 $fileCount 个文件更新" -ForegroundColor Green
     }
-    
+
     # 检查本地变化
     $status = git status --porcelain
     if ($status) {
         $changedCount = ($status | Measure-Object -Line).Lines
-        
+
         git add .
         git commit -m "auto-sync: $DeviceName at $(Get-Date -Format 'HH:mm:ss')"
         git push origin main 2>&1 | Out-Null
-        
+
         if ($LASTEXITCODE -eq 0) {
             Show-Notification "📤 已自动推送" "推送了 $changedCount 个文件到 GitHub"
             Write-Host "[$timestamp] ✅ 推送 $changedCount 个文件" -ForegroundColor Green
         }
     }
-    
+
     Start-Sleep -Seconds ($IntervalMinutes * 60)
 }
 ```
@@ -390,23 +390,23 @@ $script:pendingChanges = $false
 # 同步函数
 function Sync-Repository {
     $now = Get-Date
-    
+
     # 防抖：如果距离上次同步小于防抖时间，跳过
     if (($now - $script:lastSyncTime).TotalSeconds -lt $DebounceSeconds) {
         return
     }
-    
+
     if (-not $script:pendingChanges) {
         return
     }
-    
+
     $timestamp = $now.ToString("yyyy-MM-dd HH:mm:ss")
-    
+
     try {
         # 先拉取（避免冲突）
         Write-Host "[$timestamp] 🔄 同步中..." -ForegroundColor Cyan
         git pull origin main --no-edit 2>&1 | Out-Null
-        
+
         # 检查是否有变化
         $status = git status --porcelain
         if ($status) {
@@ -414,10 +414,10 @@ function Sync-Repository {
             git add .
             $commitMsg = "auto: $DeviceName - $(Get-Date -Format 'HH:mm:ss')"
             git commit -m $commitMsg 2>&1 | Out-Null
-            
+
             # 推送
             $pushResult = git push origin main 2>&1
-            
+
             if ($LASTEXITCODE -eq 0) {
                 Write-Host "[$timestamp] ✅ 已同步到 GitHub" -ForegroundColor Green
                 $script:pendingChanges = $false
@@ -434,18 +434,18 @@ function Sync-Repository {
 # 文件变化事件
 $onChange = {
     param($sender, $e)
-    
+
     # 检查是否在排除目录中
     $relativePath = $e.FullPath.Replace($Path, "").TrimStart('\')
     $inExcluded = $false
-    
+
     foreach ($dir in $excludeDirs) {
         if ($relativePath -like "$dir\*" -or $relativePath -eq $dir) {
             $inExcluded = $true
             break
         }
     }
-    
+
     if (-not $inExcluded) {
         $timestamp = Get-Date -Format "HH:mm:ss"
         Write-Host "[$timestamp] 📝 检测到变化: $($e.Name)" -ForegroundColor Yellow
@@ -466,11 +466,11 @@ try {
     while ($true) {
         # 每秒检查一次是否需要同步
         Start-Sleep -Seconds 1
-        
+
         if ($script:pendingChanges) {
             Sync-Repository
         }
-        
+
         # 每 30 秒拉取一次远程更新
         if (([DateTime]::Now - $script:lastSyncTime).TotalSeconds -gt 30) {
             $pullResult = git pull origin main --no-edit 2>&1

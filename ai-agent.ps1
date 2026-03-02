@@ -18,13 +18,13 @@ function Initialize-AIWorkspace {
         "$aiWorkspace/code-reviews",
         "$aiWorkspace/decisions"
     )
-    
+
     foreach ($dir in $dirs) {
         if (-not (Test-Path $dir)) {
             New-Item -ItemType Directory -Path $dir -Force | Out-Null
         }
     }
-    
+
     # 创建 README
     if (-not (Test-Path "$aiWorkspace/README.md")) {
         $readme = @"
@@ -65,15 +65,15 @@ function Create-AIPrompt {
         [string]$TaskFile,
         [string]$TaskContent
     )
-    
+
     $taskName = Split-Path -Leaf $TaskFile
     $promptFile = "$aiWorkspace/.ai-prompt-$DeviceName.md"
-    
+
     $prompt = @"
 # 🤖 AI 任务通知
 
-**设备**: $DeviceName  
-**时间**: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')  
+**设备**: $DeviceName
+**时间**: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')
 **任务文件**: ``$taskName``
 
 ---
@@ -93,23 +93,23 @@ $TaskContent
 
 2. **执行工作**
    根据任务状态：
-   
+
    **如果是新任务（PENDING）**：
    - 分析需求并分解任务
    - 生成工作计划
    - 提出需要讨论的问题
    - 开始实现第一部分
-   
+
    **如果有其他 AI 的问题**：
    - 回答问题
    - 提供技术建议
    - 继续实现代码
-   
+
    **如果需要审查（REVIEW）**：
    - 审查代码质量
    - 提出改进建议
    - 指出问题
-   
+
    **如果需要继续工作（WORKING）**：
    - 读取前一个 AI 的工作
    - 继续实现剩余部分
@@ -117,20 +117,20 @@ $TaskContent
 
 3. **更新任务文件**
    在 ``$taskName`` 末尾追加：
-   
+
    ``````markdown
    ### [$DeviceName AI] - $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')
-   
+
    **我的工作**：
    [描述你做了什么]
-   
+
    **创建的文件**：
    - file1.js
    - file2.js
-   
+
    **遇到的问题**：
    [如果有问题，描述并 @其他AI]
-   
+
    **下一步**：
    [建议下一步做什么]
    ``````
@@ -164,7 +164,7 @@ $TaskContent
 
 ✨ AI 协作，让编程更智能！
 "@
-    
+
     Set-Content -Path $promptFile -Value $prompt -Encoding UTF8
     return $promptFile
 }
@@ -199,55 +199,55 @@ $iteration = 0
 while ($true) {
     $iteration++
     $timestamp = Get-Date -Format "HH:mm:ss"
-    
+
     Write-Host "[$timestamp] " -NoNewline -ForegroundColor Gray
     Write-Host "🔄 第 $iteration 次检查..." -ForegroundColor Cyan
-    
+
     try {
         # 1. 同步最新内容
         Write-Host "  📥 同步 GitHub..." -NoNewline
         $gitResult = git pull origin main --quiet 2>&1
-        
+
         if ($LASTEXITCODE -eq 0) {
             Write-Host " ✓" -ForegroundColor Green
         } else {
             Write-Host " ⚠️" -ForegroundColor Yellow
         }
-        
+
         # 2. 检查待处理任务
         $pendingTasks = Get-ChildItem "$aiWorkspace/tasks/*-pending.md" -ErrorAction SilentlyContinue
-        
+
         if ($pendingTasks) {
             Write-Host ""
             Write-Host "  🎯 发现 $($pendingTasks.Count) 个待处理任务！" -ForegroundColor Yellow
             Write-Host ""
-            
+
             foreach ($task in $pendingTasks) {
                 $taskName = $task.Name
                 Write-Host "  📋 任务: " -NoNewline -ForegroundColor Cyan
                 Write-Host $taskName -ForegroundColor White
-                
+
                 # 读取任务内容
                 $content = Get-Content $task.FullName -Raw
-                
+
                 # 检查是否已被认领
                 if ($content -match "\[$DeviceName AI\]") {
                     Write-Host "     ✓ 你已在处理此任务" -ForegroundColor Gray
                     continue
                 }
-                
+
                 # 创建 AI 提示
                 Write-Host "     🤖 生成 AI 提示..." -NoNewline
                 $promptFile = Create-AIPrompt -TaskFile $task.FullName -TaskContent $content
                 Write-Host " ✓" -ForegroundColor Green
-                
+
                 # 打开文件
                 Write-Host "     📂 打开文件..." -NoNewline
                 Start-Process code -ArgumentList $task.FullName
                 Start-Sleep -Milliseconds 500
                 Start-Process code -ArgumentList $promptFile
                 Write-Host " ✓" -ForegroundColor Green
-                
+
                 Write-Host ""
                 Write-Host "  ⭐ " -NoNewline -ForegroundColor Yellow
                 Write-Host "请在 VSCode 中按 " -NoNewline -ForegroundColor White
@@ -262,34 +262,34 @@ while ($true) {
                 Write-Host ""
             }
         }
-        
+
         # 3. 检查需要审查的任务
         $reviewTasks = Get-ChildItem "$aiWorkspace/tasks/*-review.md" -ErrorAction SilentlyContinue
-        
+
         if ($reviewTasks) {
             Write-Host ""
             Write-Host "  🔍 发现 $($reviewTasks.Count) 个需要审查的任务" -ForegroundColor Magenta
-            
+
             foreach ($task in $reviewTasks) {
                 Write-Host "     - $($task.Name)" -ForegroundColor White
                 Start-Process code -ArgumentList $task.FullName
             }
             Write-Host ""
         }
-        
+
         # 4. 检查进行中的任务
         $workingTasks = Get-ChildItem "$aiWorkspace/tasks/*-working.md" -ErrorAction SilentlyContinue
-        
+
         if ($workingTasks) {
             Write-Host "  ⚙️  进行中: $($workingTasks.Count) 个任务" -ForegroundColor Cyan
         }
-        
+
         # 5. 检查新对话
         if (Test-Path $lastCheckFile) {
             $lastCheck = Get-Date (Get-Content $lastCheckFile)
             $newConvs = Get-ChildItem "$aiWorkspace/conversations/*.md" -ErrorAction SilentlyContinue |
                 Where-Object { $_.LastWriteTime -gt $lastCheck }
-            
+
             if ($newConvs) {
                 Write-Host ""
                 Write-Host "  💬 新的 AI 对话:" -ForegroundColor Magenta
@@ -298,14 +298,14 @@ while ($true) {
                 }
             }
         }
-        
+
         # 更新检查时间
         Get-Date -Format "o" | Set-Content $lastCheckFile
-        
+
     } catch {
         Write-Host "  ❌ 错误: $_" -ForegroundColor Red
     }
-    
+
     # 等待
     $nextCheck = (Get-Date).AddMinutes($CheckIntervalMinutes).ToString("HH:mm")
     Write-Host ""
@@ -313,6 +313,6 @@ while ($true) {
     Write-Host "  " -NoNewline
     Write-Host ("─" * 60) -ForegroundColor DarkGray
     Write-Host ""
-    
+
     Start-Sleep -Seconds ($CheckIntervalMinutes * 60)
 }

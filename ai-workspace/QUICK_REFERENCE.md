@@ -1,6 +1,6 @@
 # 🚀 Copilot AI 协作快速参考
 
-**当前任务**: Task #001 - 创建待办事项应用  
+**当前任务**: Task #001 - 创建待办事项应用
 **你的角色**: Desktop AI（第一个接手的 AI）
 
 ---
@@ -125,13 +125,13 @@ git push origin main
 3. **用 Copilot 继续**
    ```
    请阅读 task-001-working.md，我是 Laptop AI。
-   
+
    Desktop AI 已经完成了项目初始化和核心 Hook。
    请帮我实现：
    1. TodoInput.jsx - 输入框组件
-   2. TodoList.jsx - 列表组件  
+   2. TodoList.jsx - 列表组件
    3. TodoItem.jsx - 单个待办项组件
-   
+
    使用 Desktop AI 创建的 useTodos Hook。
    完成后生成我的工作记录。
    ```

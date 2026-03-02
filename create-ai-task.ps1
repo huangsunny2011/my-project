@@ -4,14 +4,14 @@
 param(
     [Parameter(Mandatory=$true)]
     [string]$Title,
-    
+
     [Parameter(Mandatory=$true)]
     [string]$Description,
-    
+
     [string]$Priority = "NORMAL",  # LOW / NORMAL / HIGH / URGENT
-    
+
     [string[]]$Tags = @(),
-    
+
     [switch]$NoPush  # 不自动推送到 GitHub
 )
 
@@ -195,20 +195,20 @@ if (-not $NoPush) {
     Write-Host "  📤 推送到 GitHub" -ForegroundColor Yellow
     Write-Host "  " -NoNewline
     Write-Host ("─" * 60) -ForegroundColor DarkGray
-    
+
     try {
         Write-Host "  🔄 添加文件..." -NoNewline
         git add $taskFile 2>&1 | Out-Null
         Write-Host " ✓" -ForegroundColor Green
-        
+
         Write-Host "  💾 提交..." -NoNewline
         $commitMsg = "task: 创建任务 #$taskNumber - $Title"
         git commit -m $commitMsg 2>&1 | Out-Null
         Write-Host " ✓" -ForegroundColor Green
-        
+
         Write-Host "  🚀 推送..." -NoNewline
         git push origin main 2>&1 | Out-Null
-        
+
         if ($LASTEXITCODE -eq 0) {
             Write-Host " ✅" -ForegroundColor Green
             Write-Host ""
